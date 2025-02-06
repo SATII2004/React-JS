@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+import "./styles.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    // API call logic here
+    console.log("Logging in with", email, password);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="container">
+      <h2>Login</h2>
+      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={handleLogin}>Login</button>
+      <Link to="/dashboard">Go to Dashboard</Link>
+    </div>
+  );
+};
 
-export default App
+const Dashboard = () => {
+  return (
+    <div className="container">
+      <h2>Admin Dashboard</h2>
+      <Link to="/report">Report a Disaster</Link>
+    </div>
+  );
+};
+
+const ReportDisaster = () => {
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSubmit = async () => {
+    // API call logic here
+    console.log("Disaster Reported:", location, description);
+  };
+
+  return (
+    <div className="container">
+      <h2>Report a Disaster</h2>
+      <input type="text" placeholder="Location" onChange={(e) => setLocation(e.target.value)} />
+      <textarea placeholder="Description" onChange={(e) => setDescription(e.target.value)}></textarea>
+      <button onClick={handleSubmit}>Submit Report</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/report" element={<ReportDisaster />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
